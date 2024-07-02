@@ -1,0 +1,540 @@
+<link rel="stylesheet" type="text/css" href="/vendor/datatables/Responsive/css/responsive.bootstrap.min.css">
+
+<style type="text/css">
+.form-control {
+	width: 98% !important;
+}
+.price {
+      number-format: "0.00", "price";
+  }
+</style>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		<%= title %>
+		<small><%= subtitle %></small>
+	</h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<!-- Default box -->
+	<div class="box box-primary">
+		<div class="box-header with-border">
+		</div>
+		<div class="box-body">
+      <form id="md_pembayaran_jamaahForm" class="form-horizontal">
+
+				<div class="row">
+					<div class="col-md-9">
+						<div class="box-header with-border">
+							<h3 class="box-title"><i class="fa fa-bookmark" aria-hidden="true"></i>&nbsp;Booking Paket Umroh</h3>
+						</div>
+					</div>
+          <div class="col-md-3">
+            <label >Kode Bayar</label>
+            <input type='text' style='text-align:center;' class="form-control"  name="f_kode_bayar" readonly id="f_kode_bayar">
+          </div>
+
+					<div class="col-md-12">
+						<input type="hidden" class="form-control" name="f_id_paket" value="<%= result[0]['f_produk_detail'][0]['_id'] %>">
+            <input type='hidden'  id='f_kode_booking' name='f_kode_booking' value='<%= result[0]['_id']['f_kode_booking'] %>'>
+						<table class="table table-striped table-bordered" style="width:100%">
+							<thead>
+								<tr>
+									<th class="center">Nama Paket</th>
+									<th class="center">No Booking</th>
+                  <th class="right">Jumlah Seat</th>
+									<th class="center">Pemegang Booking</th>
+									<th class="center">Hp</th>
+									<th class="center">Email</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td ><%= result[0]['f_produk_detail'][0]['f_produk'] %></td>
+									<td><%= result[0]['_id']['f_kode_booking'] %></td>
+                  <td class="right"><%= result[0]['_id']['f_jml_seat_booking'] %></td>
+									<td><%= result[0]['_id']['f_nama_pendaftar'] %></td>
+                  <td ><%= result[0]['_id']['f_hp'] %></td>
+									<td ><%= result[0]['_id']['f_email'] %></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="pad margin no-print">
+							<div class="callout callout-info" style="margin-bottom: 0!important;">
+								<h4><i class="fa fa-info"></i> Note:</h4>
+								Tagihan Paket telah dikurangi pembayaran Booking.
+							</div>
+				</div>
+
+				<!--button type="button" class="btn btn-success btn-lg" onclick="fnsetbayargroup()">Set Bayar Group</button-->
+				<div class="box-body">
+						<div id='loadcontentbooking' style="background-color: #abebc6 ;"></div>
+
+            <div id='loadcontent' style="background-color: #abebc6 ;"></div>
+
+						<div class="row">
+							<div class='col-md-4' >
+								<label>Keterangan</label>
+								<input type='text' id='f_keterangan' name='f_keterangan' class='form-control' required>
+							</div>
+
+							<div class='col-md-3 pull-right' style='margin-bottom:10px;margin-right:10px;'>
+							  <label >Tgl Bayar</label>
+								<input readonly id='f_tgl_bayar' name='f_tgl_bayar' class='form-control' onchange='fnsumBayar()' required>
+							</div>
+
+            </div>
+
+						<div style='border:1px #000;' id="loadcontentfootbayar">
+						</div>
+
+						<div class="row">
+              <div class="col-md-3 pull-right" style="margin-bottom:10px;margin-right:10px;">
+                <label >Jumlah Total</label>
+                <input style='text-align:right;' readonly id='f_total_dibayar' name='f_total_dibayar' class="form-control"  required >
+              </div>
+            </div>
+						<div class="row">
+								<div class="col-xs-6">
+									  <a href='javascript:void(0)'  onclick="fnmoremetodebayar()" class='btn btn-info glyphicon glyphicon-plus-sign'></a>
+								</div>
+						</div>
+						<div class="row">
+            </div>
+
+            <!-- <div class="row">
+              <div class="col-md-3 pull-right" style="margin-right:10px;">
+                <div class="form-group">
+                  <label >Metode Bayar</label>
+                  <select id='f_metode_bayar' name='f_metode_bayar' onchange='fnmetodebayar()' class="form-control"  required>
+                    <option value='Cash'>Cash</option>
+                    <option value='Transfer'>Transfer</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3 pull-right" style="margin-bottom:10px;margin-right:10px;">
+                <label >Tgl Bayar</label>
+                <input readonly id='f_tgl_bayar' name='f_tgl_bayar' class="form-control"  required>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3 pull-right" style="margin-bottom:10px;margin-right:10px;">
+                <label >Jumlah Total Bayar</label>
+                <input style='text-align:right;' readonly id='f_total_bayar' name='f_total_bayar' class="form-control"  required>
+              </div>
+            </div>
+            <div class="row" id='bank'>
+              <div class="col-md-3 pull-right" style="margin-bottom:10px;margin-right:10px;">
+                <div class="form-group">
+                  <label >Bank</label>
+                  <select id='f_bank' name='f_bank' class="form-control" >
+                    <option value=''></option>
+                    <option value='BRI'>BRI</option>
+                    <option value='BNI'>BNI</option>
+                    <option value='BCA'>BCA</option>
+                    <option value='MANDIRI'>MANDIRI</option>
+	                    <option value='BPD'>BPD</option>
+                    <option value='BNI SYARIAH'>BNI SYARIAH</option>
+                    <option value='MANDIRI SYARIAH'>MANDIRI SYARIAH</option>
+	<option value='BUKOPIN SYARIAH'>BUKOPIN SYARIAH</option>
+                    <option value='CIMB NIAGA SYARIAH'>CIMB NIAGA SYARIAH</option>
+                    <option value='MUAMALAT'>MUAMALAT</option>
+                  </select>
+                </div>
+              </div>
+            </div> -->
+            <div class="row">
+            </div>
+						<div class="col-md-12">
+							<div class="col-md-4">
+							</div>
+							<div class="col-md-4">
+								<input type="button" id="btnSaveDisable" class="form-control btn btn-default" value='Simpan'>
+								<input type="submit" id="btnSave" class="form-control btn btn-success" value='Simpan'>
+								<a href="javascript:void(0)" onclick="fnPrintSlip()" id='btnPrint' class="form-control btn btn-primary"> <i class="glyphicon glyphicon-print" ></i>Print</a>
+							</div>
+							<div class="col-md-4">
+								<a href="javascript:void(0)" onclick="fnhome()" id='btnTutup' class="form-control btn btn-danger sidemenu cancel "><i class="glyphicon glyphicon-log-out"></i> Tutup</a>
+							</div>
+            </div>
+          </form>
+				</div> <!-- end .box-body -->
+
+
+				<!----Modal Biaya-biaya ---------->
+
+
+
+	</div>
+	<!-- /.box-body -->
+</div>
+<!-- /.box -->
+
+</section>
+<!-- /.content -->
+<script src="/vendor/form/jquery.validate.min.js"></script>
+<script src="/vendor/form/jquery.form.min.js"></script>
+
+<script type="text/javascript">
+$("body").toggleClass("sidebar-collapse");
+$('#btnPrint').hide();
+$('#btnSave').hide();
+
+$(function(){
+	$("#md_pembayaran_jamaahForm").validate({
+		highlight: function(element, errorClass, validClass) {
+			$(element).parents('.form-group').removeClass('has-success').addClass('has-error');
+		},
+		unhighlight: function(element, errorClass, validClass) {
+			$(element).parents('.form-group').removeClass('has-error').addClass('has-success');
+		}
+	});
+
+  $.get('../md_pembayaran_jamaah/fnseriesno/',function(e){
+		$('#f_kode_bayar').val(e.f_kode_bayar);
+	},'json');
+
+})
+	$('#f_tgl_bayar').datepicker({
+	  dateFormat: "yy-mm-dd",
+	  regional: "id",
+		maxDate: new Date(),
+// 		startDate: new Date(),
+	});
+
+function addCommas(nStr)
+{
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+
+	return x1 + x2;
+}
+
+fnloadDataJamaah()
+function fnloadDataJamaah(){
+  $('#loadcontent').html('');
+  $.ajax({
+    type:'POST',
+    data:{
+      kodebooking : '<%= result[0]['_id']['f_kode_booking'] %>',
+    },
+    url:"../md_pembayaran_jamaah/data_jamaah/",
+    success: function (result){
+      var out  ="<table id='tbljamaah' class='table table-striped table-bordered' style='width:100%;'>";
+              out +="	<thead>"+
+                      "<tr>"+
+                          "<th style='width:1%;text-align:center;'>No</th>"+
+                          "<th style='width:20%;text-align:center;'>Kode Jamaah</th>"+
+                          "<th style='text-align:center;'>Nama Jamaah</th>"+
+                          "<th style='width:15%;text-align:right;'>Tagihan</th>"+
+                          "<th style='width:15%;text-align:right;'>Sisa Tagihan</th>"+
+                      "</tr>"+
+                      "</thead>";
+                      var varr = [];
+                     var no = 1;
+                     for(i=0;i< result['data'].length;i++){
+                       out +="	<tr style='font-weight:bold;'>"+
+                                   "<td align='center'>"+no+"</td>"+
+                                   "<td align='center'>"+
+                                   result['data'][i]['f_kode_jamaah']+
+                                  "</td>"+
+                                   "<td>"+
+                                   result['data'][i]['f_nama_jamaah'] +
+                                   "</td>"+
+                                   "<td align='right'>"+
+                                   formatNumber(result['data'][i]['f_jml_tagihan'])+
+                                   "</td>"+
+                                   "<td align='right'>"+
+                                   formatNumber(result['data'][i]['f_jml_sisa_tagihan'])+
+                                   "</td>"+
+                              "</tr>";
+                              out +="	<tr><td colspan='5'>"+
+                                      "<table  class='table table-bordered' width='100%'>";
+
+                                      out +="	<tr style='font-weight:bold;'>"+
+                                                  "<td align='center' width='25%'>Nama Biaya</td>"+
+                                                  "<td align='center' width='25%'>Jml Tagihan</td>"+
+                                                  "<td align='center' width='25%'>Sisa Tagihan</td>"+
+                                                  "<td align='center' width='25%'>Jml Bayar</td>"+
+                                             "</tr>";
+
+                                      for(ii=0;ii< result['data'][i]['f_biaya_detail'].length;ii++){
+                                        out +="	<tr>"+
+                                                    "<td align='left'>"+
+                                                    "<input type='hidden' id='f_jml_sisa_tagihan_jamaah[]' name='f_jml_sisa_tagihan_jamaah[]' value='"+result['data'][i]['f_jml_sisa_tagihan']+"'>"+
+
+                                                    "<input type='hidden'  id='f_kode_jamaah' name='f_kode_jamaah[]' value='"+result['data'][i]['f_kode_jamaah']+"'>"+
+                                                    "<input type='hidden' class='form-control' style='text-align:left;' id='f_kode_invoice[]' name='f_kode_invoice[]' value='"+result['data'][i]['f_biaya_detail'][ii]['_id']+"'>"+
+
+                                                    "<input type='hidden' class='form-control' style='text-align:left;' id='f_kode_biaya[]' name='f_kode_biaya[]' value='"+result['data'][i]['f_biaya_detail'][ii]['f_kode_biaya']+"'>"+
+                                                    "<input class='form-control' style='text-align:left;' id='f_nama_biaya[]' name='f_nama_biaya[]' value='"+result['data'][i]['f_biaya_detail'][ii]['f_deskripsi']+"'>"+
+                                                    "</td>"+
+                                                    "<td align='right'>"+
+                                                    "<input readonly class='form-control' style='text-align:right;' id='f_biaya[]' name='f_biaya[]' value='"+formatNumber(result['data'][i]['f_biaya_detail'][ii]['f_biaya'])+"'>"+
+                                                    "</td>"+
+                                                    "<td align='right'>"+
+                                                    "<input readonly class='form-control price' style='text-align:right;' id='f_jml_sisa_tagihan[]' name='f_jml_sisa_tagihan[]' value='"+formatNumber(result['data'][i]['f_biaya_detail'][ii]['f_jml_sisa_tagihan'])+"'>"+
+                                                    "</td>"+
+                                                    "<td>"+
+                                                    "<input type='text' class='form-control byr' style='text-align:right;' id='f_jml_bayar[]' name='f_jml_bayar[]' onkeyup='fnsum()'>"+
+                                                    "</td>"+
+
+                                              " </tr>";
+                                      }
+
+                              out +="</table>";
+                              out +="	</td></tr>";
+                      no++;
+                     }
+							 out +="	<tr>"+
+                           "<td colspan='4' style='text-align:right;font-weight:bold;'>Total</td>"+
+                           "<td style='width:300px;text-align:right;font-weight:bold;font-size:14px;'><input type='hidden' id='f_total_bayar' name='f_total_bayar' class='form-control' style='text-align:right;float:right;padding-right:20px;'> <p id='vtotal_bayar'></p></td>"+
+                       "</tr>";
+          out +="</table>";
+
+      $('#loadcontent').html(out);
+    }
+  });
+}
+
+function fnsum() {
+
+				var sum = 0;
+				var i = 1;
+				$('#tbljamaah input.byr').each(function() {
+					var deb;
+					if(!isNaN(this.value.replace(/[\,]/g, '')) && this.value.length!=0) {
+							sum +=  parseFloat(this.value.replace(/[\,]/g, ''))
+					}
+					i++;
+				});
+				//.toFixed() method will roundoff the final sum to 2 decimal places
+				$('#f_total_bayar').val(formatNumber(sum));
+				 document.getElementById("vtotal_bayar").innerHTML = formatNumber(sum);
+}
+$(document).ready(function(){
+
+    // Format mata uang.
+
+})
+function formatNumber(num) {
+  if(Number(num) > 0){
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+  }else{
+    num = 0;
+    return num
+  }
+}
+fnfooterbayar()
+function fnmoremetodebayar(){
+	fnfooterbayar()
+}
+function fnfooterbayar(){
+//  $('#loadcontentfootbayar').html('');
+//  var no = 1;
+	var no = $('.countmethod').length + 1
+	var out ="<div class='bg-info countmethod'>"+
+						"<div class='row'>"+
+						"<div class='col-md-3 pull-right' style='margin-right:10px;'>"+
+						  "<div class='form-group'>"+
+						    "<label >Metode Bayar</label>"+
+						    "<select id='f_metode_bayar"+no+"' name='f_metode_bayar[]' onchange='fnmetodebayar("+no+")' class='form-control'  required>"+
+						      "<option value='Cash'>Cash</option>"+
+						      "<option value='Transfer'>Transfer</option>"+
+						    "</select>"+
+						  "</div>"+
+						"</div>"+
+						"</div>"+
+						"<div class='row'>"+
+						"<div class='col-md-3 pull-right' style='margin-right:10px;'>"+
+						  "<div class='form-group'>"+
+						    "<label >Mata Uang</label>"+
+						    "<select id='f_currency[]' name='f_currency[]' class='form-control'  required>"+
+						      "<option value='IDR'>IDR</option>"+
+						      "<option value='USD'>USD</option>"+
+						"<option value='SAR'>SAR</option>"+
+						"<option value='RM'>RM</option>"+
+						    "</select>"+
+						  "</div>"+
+						"</div>"+
+						"</div>"+
+						"<div class='row' id='bank"+no+"'>"+
+						"<div class='col-md-3 pull-right' style='margin-bottom:10px;margin-right:10px;'>"+
+						  "<div class='form-group'>"+
+						    "<label >Bank</label>"+
+						    "<select id='f_bank' name='f_bank[]'  class='form-control'  >"+
+						      "<option value=''></option>"+
+						      "<option value='BRI'>BRI</option>"+
+						      "<option value='BNI'>BNI</option>"+
+						      "<option value='BCA'>BCA</option>"+
+						      "<option value='MANDIRI'>MANDIRI</option>"+
+						"<option value='BPD'>BPD</option>"+
+						      "<option value='BNI SYARIAH'>BNI SYARIAH</option>"+
+						      "<option value='MANDIRI SYARIAH'>MANDIRI SYARIAH</option>"+
+						"<option value='BUKOPIN SYARIAH'>BUKOPIN SYARIAH</option>"+
+						      "<option value='CIMB NIAGA SYARIAH'>CIMB NIAGA SYARIAH</option>"+
+						      "<option value='MUAMALAT'>MUAMALAT</option>"+
+						    "</select>"+
+						  "</div>"+
+						"</div>"+
+						"</div>"+
+
+						"<div class='row'>"+
+						"<div class='col-md-3 pull-right' style='margin-bottom:10px;margin-right:10px;'>"+
+						  "<label >Jumlah Bayar</label>"+
+						  "<input style='text-align:right;' id='f_bayar[]' name='f_bayar[]' onkeyup='fnsumBayar()' class='form-control dbyr'  required>"+
+						"</div>"+
+						"</div>"+
+						"</div><hr>";
+			$('#loadcontentfootbayar').append(out);
+			fnmetodebayar(no)
+	no++;
+}
+function fnmetodebayar(no){
+  var mtd = $('#f_metode_bayar'+no).val();
+    if(mtd == 'Cash'){
+      $('#bank'+no).hide()
+    }else{
+      $('#bank'+no).show()
+    }
+}
+function fnsumBayar() {
+				var sum = 0;
+				var i = 1;
+				$('#loadcontentfootbayar input.dbyr').each(function() {
+					var deb;
+					if(!isNaN(this.value.replace(/[\,]/g, '')) && this.value.length!=0) {
+							sum +=  parseFloat(this.value.replace(/[\,]/g, ''))
+					}
+					i++;
+				});
+				//.toFixed() method will roundoff the final sum to 2 decimal places
+				$('#f_total_dibayar').val(formatNumber(sum));
+				if(formatNumber(sum) != $('#f_total_bayar').val()){
+					$('#btnSave').hide();
+					$('#btnSaveDisable').show();
+
+				}else{
+					if($('#f_tgl_bayar').val() !=''){
+						$('#btnSave').show()
+						$('#btnSaveDisable').hide();
+					}else{
+						alert('Silahkan isi tanggal terlebih dahulu!!')
+					}
+				}
+
+}
+
+$("#md_pembayaran_jamaahForm").ajaxForm({
+  type : 'POST',
+  beforeSubmit : function() {
+    $(".box").append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+  },
+  dataType : 'json',
+  url : "insert",
+  success : function(e) {
+    if(e.success)
+    {
+      infoDialog.realize();
+      infoDialog.setTitle('Success').setMessage('<center>'+e.message+' !!</center>').setType(BootstrapDialog.TYPE_SUCCESS).open();
+      url = 'md_pembayaran_jamaah/index.html';
+      var href = window.location.origin;href += '/md_pembayaran_jamaah/index';
+      $("div.content-wrapper").load(href);
+      document.title = "App ME | " + data.replace('/',' ');
+      history.pushState(null, null, url);
+    }
+    else
+    {
+      $('.overlay').remove();
+      infoDialog.realize();
+      infoDialog.setTitle('Info').setMessage('<center>'+e.message+' !!</center>').setType(BootstrapDialog.TYPE_DANGER).open();
+    }
+  },
+  error : function(e) {
+    $('.overlay').remove();
+    infoDialog.realize();
+    infoDialog.setTitle('Info').setMessage('<center>Error !!</center>').setType(BootstrapDialog.TYPE_DANGER).open();
+  }
+});
+
+/*
+function fnSave(){
+	var room = document.getElementsByName('f_room');
+	var room_value;
+	for(var i = 0; i < room.length; i++){
+	    if(room[i].checked){
+	        room_value = room[i].value;
+	    }
+	}
+	var addon	   				= $("#f_addon").val();
+	var kelas_bisnis    =  $("#f_kelas_bisnis").val();
+	var guide_dorong  	= $("#f_guide_dorong").val();
+	var guide_khusus    = $("#f_guide_khusus").val();
+
+
+	var rec = {
+		"f_id_produk"		    		: $('#f_id_produk').val(),
+		"f_kode_flight"		    	: $('#f_kode_flight').val(),
+	  "f_kode_booking"	    	: $('#f_kode_booking').val(),
+		"f_kode_jamaah"	    	: $('#f_kode_jamaah').val(),
+	  "f_room"		    				: $('#f_room').val(),
+	  "f_nama_jamaah"		    	: $('#f_nama_jamaah').val(),
+		"f_gender"	          	: $('#f_gender').val(),
+		"f_tempat_lahir"	    	: $('#f_tempat_lahir').val(),
+		"f_tgl_lahir"		    		: $('#f_tgl_lahir').val(),
+		"f_hp"		            	: $('#f_hp').val(),
+		"f_email"		    				: $('#f_email').val(),
+		"f_alamat"	          	: $('#f_alamat').val(),
+		"f_catatan"		    			: $('#f_catatan').val(),
+		"f_berkas"	          	: $('#f_berkas').val(),
+		"f_room"								: room_value,
+	  "f_group"		    				: $('#f_kode_group_family').val(),
+		"f_no_passport"		    	: $('#f_no_passport').val(),
+		"f_kota_rilis_passport"	: $('#f_kota_rilis_passport').val(),
+		"f_tgl_rilis_passport"	: $('#f_tgl_rilis_passport').val(),
+		"f_tgl_expired_passport"	: $('#f_tgl_expired_passport').val(),
+		"f_addon"		   					: addon,
+		"f_kelas_bisnis"	    	: kelas_bisnis,
+		"f_guide_dorong"				: guide_dorong,
+		"f_guide_khusus"				: guide_khusus,
+		"f_sharing_bed"		    	: $('#f_sharing_bed').val(),
+		"f_infant"		    			: $('#f_infant').val(),
+		"f_tiket_id"		    		: $('#f_tiket_id').val(),
+	}
+		var url = $('#url').val();
+		$.post('../md_entry_jamaah/'+url, rec, function(msg){
+			if(msg.success == true)
+			{
+				$('#myModal').modal('hide');
+				$('#dataJamaah').DataTable().ajax.reload();
+				infoDialog.realize();
+				infoDialog.setTitle('Success').setMessage('<center>'+e.message+' !!</center>').setType(BootstrapDialog.TYPE_SUCCESS).open();
+				fnclear()
+			}
+			else
+			{
+				alert(msg.message)
+				//infoDialog.realize();
+				//infoDialog.setTitle('Info').setMessage('err').setType(BootstrapDialog.TYPE_DANGER).open();
+			}
+		}, 'json');
+}
+*/
+
+
+</script>

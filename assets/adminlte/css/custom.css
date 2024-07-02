@@ -1,0 +1,151 @@
+@media only screen and (max-width: 720px) {
+
+    .img-me {
+
+        height: 100% !important;
+
+    }
+
+    .custom-scrollbar-css:hover {
+
+        overflow: hidden;
+
+    }
+
+    .custom-scrollbar-css {
+
+        overflow: auto !important;
+
+    }
+
+    .custom-scrollbar-css1:hover {
+
+        overflow: hidden;
+
+    }
+
+    .custom-scrollbar-css1 {
+
+        overflow: auto !important;
+
+    }
+
+    .booth-padding{
+        padding-right: 0px;
+    }
+
+    .stage-left-0{
+        padding-left: 0px !important;
+    }
+
+}
+
+.hover-link:hover{
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+
+.hover-link:last-of-type{
+    margin-bottom: 5px;
+}
+
+.img-me{
+
+    height: 395px;
+
+}
+
+.card-title{
+
+    font-weight: bold !important;
+
+}
+
+.card{
+
+    box-shadow: none;
+
+    border: none;
+
+}
+
+.main-header{
+
+    border: none;
+
+}
+
+.direct-chat-messages{
+
+    overflow: unset;
+
+}
+
+.content-stage{
+
+    height: 350px;
+
+}
+
+.content-booth{
+
+    height: 350px;
+
+}
+
+.custom-scrollbar-css:hover {
+    overflow: auto;
+}
+
+.custom-scrollbar-css {
+    overflow: hidden;
+}
+
+.custom-scrollbar-css1:hover {
+    overflow: auto;
+}
+
+.custom-scrollbar-css1 {
+    overflow: hidden;
+}
+
+
+.custom-scrollbar-css::-webkit-scrollbar {
+
+    width: 3px !important;
+
+}
+
+/* scrollbar handle */
+
+.custom-scrollbar-css::-webkit-scrollbar-thumb {
+
+    border-radius: 1rem;
+
+    background-image: linear-gradient(to top, #0e0e0e 0%, #cbced2 0%);
+
+}
+
+.custom-scrollbar-css1::-webkit-scrollbar {
+    width: 3px !important;
+}
+
+/* scrollbar handle */
+.custom-scrollbar-css1::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-image: linear-gradient(to top, #0e0e0e 0%, #cbced2 0%);
+}
+
+.cover-payment{
+    border: 1px solid #c1c1c1;
+    border-radius: 5px;
+    box-shadow: 3px 2px 2px 0px #e3e3e3;
+}
+
+/* scrollbar track */
+
+/* .custom-scrollbar-css::-webkit-scrollbar-track {
+
+background: #eee;
+
+} */

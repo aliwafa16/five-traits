@@ -1,0 +1,232 @@
+<link href="/vendor/datatables/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/vendor/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet">
+<style type="text/css">
+  @media print
+   {    
+    .no-print, .no-print *
+    {
+      display: none !important;
+    }
+  }
+</style>
+<!-- Content Header (Page header) -->
+<div class="container-fluid">
+
+<section class="invoice">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 class="page-header">
+        TRAVEL UMROH.
+        <small class="pull-right">
+          <!-- <p id="demo"></p> -->
+          <p id="dates"></p>
+        </small>
+      </h2>
+    </div>
+   
+  </div>
+  <div class="row invoice-info">
+    <div align="center" class="header">
+      <h4>
+        CETAK SLIP
+      </h4>
+    </div>
+    <div class="col-sm-4 invoice-col">
+      <b>
+        Nomor Bayar #<%= result[0]['_id']['f_kode_bayar'] %>
+      </b>
+      <br>
+      <br>
+      <b>
+        Nama Jamaah:
+      </b>
+      <%= result[0]['_id']['f_nama_jamaah'] %>
+      <br>
+      <b>
+        Kode Booking:
+      </b>
+      <%= result[0]['_id']['f_kode_booking'] %>
+      <br>
+      <b>
+        Payment Due:
+      </b>
+      <%= result[0]['_id']['f_due_date_booking'] %>
+      <br>
+      <b>
+        Paket:
+      </b>
+      <%= result[0]['_id']['f_produk_detail'] %>
+    </br>
+  </br>
+</br>
+</br>
+</div>
+</div>
+<div class="row">
+  <div class="container-fluid">
+    <h4>
+      DETAIL PEMBAYARAN
+    </h4>
+  </div>
+  <div class="col-xs-12 table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            Tanggal Pembayaran
+          </th>
+          <th>
+            Jenis Pembayaran
+          </th>
+          <th>
+            Bank
+          </th>
+          <th>
+            Remark
+          </th>
+          <th>
+            Total
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <%= result[0]['_id']['f_tgl_bayar'] %>
+          </td>
+          <td>
+            <%= result[0]['_id']['f_metode_bayar'] %>
+          </td>
+          <td>
+            <%= result[0]['_id']['f_bank'] %>
+          </td>
+          <td>
+            <%= result[0]['_id']['f_remark'] %>
+          </td>
+          <td>
+            <%= result[0]['_id']['f_total_bayar'] %>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" colspan="4">
+            Discount
+          </td>
+          <td>
+           0
+          </td>
+        </tr>
+        <tr>
+          <td align="right" colspan="4">
+            Discount
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td align="right" colspan="4">
+            SubTotal
+          </td>
+          <td>
+             <%= result[0]['_id']['f_total_bayar'] %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<table width="100%">
+  <tr style="text-align: center;">
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+      Jamaah Umroh
+      <br>
+      <br>
+      <br>
+      <br>
+      (<%= result[0]['_id']['f_nama_jamaah'] %>)
+    </br>
+  </br>
+</br>
+</br>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+  Customer Service
+  <br>
+  <br>
+  <br>
+  <br>
+  (Romi Tubagus)
+</br>
+</br>
+</br>
+</br>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+</table>
+</section>
+</div>
+
+<div class="container-fluid">
+<div class="row no-print" id="fnButton">
+  <div class="col-xs-12">
+    <a href="javascript:void(0);" onClick="window.print()" class="btn btn-success pull-right"><i class="fa fa-print"></i>Cetak </a>
+    <a href="javascript:void(0);" onClick="fnCancel()" class="btn btn-danger pull-right" style="margin-right: 5px;">Close</a>
+  </div>
+</div>
+</div>
+
+<!-- /.content -->
+<!-- /.content -->
+<script charset="utf8" src="/vendor/datatables/Responsive/js/dataTables.responsive.min.js" type="text/javascript">
+</script>
+<script charset="utf8" src="/vendor/datatables/Responsive/js/responsive.bootstrap.min.js" type="text/javascript">
+</script>
+<script src="/vendor/jquery/jquery.min.js">
+</script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js">
+</script>
+<script src="/vendor/bootstrap3-dialog/bootstrap-dialog.min.js">
+</script>
+<script>
+    // var tanggal = new Date();
+  var hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jum&39;at','Sabtu'];
+  var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+  var tanggal = new Date().getDate();
+  var _hari = new Date().getDay();
+  var _bulan = new Date().getMonth();
+  var _tahun = new Date().getYear();
+
+  var hari = hari[_hari];
+  var bulan = bulan[_bulan];
+  var tahun = (_tahun < 1000) ? _tahun + 1900 : _tahun;
+ 
+  document.getElementById("dates").innerHTML = hari + ' , ' + tanggal + ' ' + bulan + ' ' + tahun;
+
+  function fnCancel() {
+     parent.$.fancybox.close();
+   }
+  </script>
+
+</link>
+</link>
+</link>
